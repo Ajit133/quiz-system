@@ -28,7 +28,7 @@
             <h2 class="text-xl font-semibold text-white mb-1">Welcome back</h2>
             <p class="text-slate-400 text-sm mb-7">Sign in to access your admin dashboard</p>
 
-            <form action="" method="POST" class="space-y-5">
+            <form action="/admin-login" method="POST" class="space-y-5">
                 @csrf
 
                 {{-- Username --}}
@@ -46,7 +46,7 @@
                         <input
                             id="username"
                             type="text"
-                            name="username"
+                            name="name"
                             placeholder="Enter your username"
                             autocomplete="username"
                             class="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/15 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -78,13 +78,13 @@
                 </div>
 
                 {{-- Remember me --}}
-                <div class="flex items-center justify-between">
+                {{-- <div class="flex items-center justify-between">
                     <label class="flex items-center gap-2 cursor-pointer select-none">
                         <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-600 bg-white/10 accent-blue-500" />
                         <span class="text-sm text-slate-400">Remember me</span>
                     </label>
                     <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition">Forgot password?</a>
-                </div>
+                </div> --}}
 
                 {{-- Submit --}}
                 <button
