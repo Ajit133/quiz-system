@@ -28,6 +28,10 @@
             <h2 class="text-xl font-semibold text-white mb-1">Welcome back</h2>
             <p class="text-slate-400 text-sm mb-7">Sign in to access your admin dashboard</p>
 
+             @error('user')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
+
             <form action="/admin-login" method="POST" class="space-y-5">
                 @csrf
 
@@ -51,6 +55,9 @@
                             autocomplete="username"
                             class="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/15 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                         />
+                        @error('name')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -74,6 +81,9 @@
                             autocomplete="current-password"
                             class="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/15 text-white placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                         />
+                        @error('password')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
