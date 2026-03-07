@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -48,5 +49,15 @@ class AdminController extends Controller
     function logout(){
         Session::forget('admin');
         return redirect('/admin-login');
+    }
+    function addCategory(Request $request){
+           $admin = session::get('admin');
+           $category = new Category();
+           $category->name = $request->category;
+           $category->creator = $admin->name;
+           if($category->save()){
+              Session::flash('category', "Category '" . $request->category . "' added successfully!");
+           }
+           return redirect('/admin-categories');
     }
 }
