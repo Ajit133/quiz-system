@@ -17,7 +17,7 @@
                 <a href="/admin-categories" class="px-4 py-2 rounded-md text-sm font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white transition-colors duration-200">
                     Categories
                 </a>
-                <a href="#" class="px-4 py-2 rounded-md text-sm font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white transition-colors duration-200">
+                <a href="/add-quiz" class="px-4 py-2 rounded-md text-sm font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white transition-colors duration-200">
                     Quizzes
                 </a>
 
