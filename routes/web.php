@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// ── User-facing public routes ──
+Route::get('/', [UserController::class, 'home']);
+Route::get('/quizzes/category/{id}', [UserController::class, 'categoryQuizzes']);
+Route::get('/quizzes/{id}', [UserController::class, 'quizDetail']);
 
+// ── Admin routes ──
 Route::view('/admin-login','admin-login');
 Route::post('/admin-login',[AdminController::class,'login']);
 Route::get('/dashboard',[AdminController::class,'dashboard']);
