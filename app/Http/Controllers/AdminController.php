@@ -41,13 +41,21 @@ class AdminController extends Controller
     }
 
     function categories(){
-        $categories = Category::get();
-         $admin =  session::get('admin');
-        if($admin){
-             return view('categories',['name'=>$admin->name,'categories'=>$categories]);
-        }else{
-            return redirect('/admin-login');
-        }
+        $admin = Session::get('admin');
+        if(!$admin) return redirect('/admin-login');
+        $categories = Category::withCount('quizzes')->get();
+        return view('categories', ['name' => $admin->name, 'categories' => $categories]);
+    }
+
+    function categoryQuizzes($id){
+        $admin = Session::get('admin');
+        if(!$admin) return redirect('/admin-login');
+        $category = Category::with('quizzes')->findOrFail($id);
+        return view('category-quizzes', [
+            'name'     => $admin->name,
+            'category' => $category,
+            'quizzes'  => $category->quizzes,
+        ]);
     }
     function logout(){
         Session::forget('admin');
@@ -155,5 +163,17 @@ class AdminController extends Controller
         Session::forget('quizDetails');
         Session::flash('quiz_success', 'Quiz saved! You can create a new quiz below.');
         return redirect('/add-quiz');
+    }
+
+    function quizDetail($id){
+        $admin = Session::get('admin');
+        if(!$admin) return redirect('/admin-login');
+
+        $quiz = Quiz::with('questions')->findOrFail($id);
+        return view('quiz-detail', [
+            'name'      => $admin->name,
+            'quiz'      => $quiz,
+            'questions' => $quiz->questions,
+        ]);
     }
 }

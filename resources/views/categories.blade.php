@@ -153,7 +153,19 @@
                             <div style="display:flex; align-items:center;">
                                 <span class="category-index">{{ $index + 1 }}</span>
                                 <div>
-                                    <p style="margin:0; font-weight:600; color:#1e293b; font-size:0.9375rem;">{{ $category->name }}</p>
+                                    @if($category->quizzes_count > 0)
+                                        <a href="/category/{{ $category->id }}/quizzes"
+                                           style="margin:0; font-weight:600; color:#4f46e5; font-size:0.9375rem; text-decoration:none;"
+                                           onmouseover="this.style.textDecoration='underline'"
+                                           onmouseout="this.style.textDecoration='none'">
+                                            {{ $category->name }}
+                                        </a>
+                                        <span class="badge" style="background:#dcfce7;color:#166534;">
+                                            {{ $category->quizzes_count }} {{ Str::plural('Quiz', $category->quizzes_count) }}
+                                        </span>
+                                    @else
+                                        <p style="margin:0; font-weight:600; color:#1e293b; font-size:0.9375rem;">{{ $category->name }}</p>
+                                    @endif
                                     <p style="margin:0; font-size:0.75rem; color:#94a3b8;">Added by {{ $category->creator }}</p>
                                 </div>
                             </div>

@@ -18,3 +18,5 @@ Route::get('/add-quiz',[AdminController::class,'showAddQuiz']);
 Route::post('/add-quiz',[AdminController::class,'saveQuiz']);
 Route::post('/add-question',[AdminController::class,'addQuestion']);
 Route::get('/finish-quiz',[AdminController::class,'finishQuiz']);
+Route::get('/category/{id}/quizzes',[AdminController::class,'categoryQuizzes']);
+Route::get('/quiz/{id}',[AdminController::class,'quizDetail']);
