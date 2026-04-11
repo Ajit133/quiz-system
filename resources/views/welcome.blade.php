@@ -3,301 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Your Skill — Quiz System</title>
+    <title>Quizzes - Quiz System</title>
     @vite('resources/css/app.css')
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', 'Segoe UI', sans-serif; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap');
 
-        /* ── Navbar ── */
-        .user-nav {
-            background: #4338ca;
-            padding: 0 1.5rem;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 3.75rem;
-            box-shadow: 0 2px 8px rgba(67,56,202,.25);
+        :root {
+            --page-bg: #ecf4ea;
+            --frame-bg: #f6faf2;
+            --hero-bg: #45bb67;
+            --hero-bg-dark: #33a958;
+            --ink: #06110b;
+            --ink-soft: #244437;
+            --pill: #e9f7ed;
+            --line: rgba(9, 27, 17, 0.14);
+            --white: #ffffff;
+            --yellow: #f7df43;
         }
-        .user-nav .brand {
-            display: flex; align-items: center; gap: 0.5rem;
-            color: #fff; font-size: 1.125rem; font-weight: 700;
-            text-decoration: none; letter-spacing: 0.02em;
-        }
-        .user-nav .brand:hover { color: #c7d2fe; }
-        .nav-admin-link {
-            font-size: 0.8125rem; font-weight: 600; color: #e0e7ff;
-            text-decoration: none; padding: 0.4rem 0.9rem;
-            border: 1.5px solid rgba(255,255,255,.35); border-radius: 0.4rem;
-            transition: background .18s, border-color .18s;
-        }
-        .nav-admin-link:hover { background: rgba(255,255,255,.12); border-color: #fff; color: #fff; }
 
-        /* ── Hero ── */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(circle at 10% 10%, #f9ffef 0%, #ecf4ea 48%, #e2efde 100%);
+            color: var(--ink);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* .landing-frame {
+            width: min(1180px, 100%);
+            margin: 0 auto;
+            border-radius: 18px;
+            background: transparent;
+            border: 1px solid #d2e8cc;
+            box-shadow: 0 22px 60px rgba(32, 69, 42, 0.16);
+            overflow: hidden;
+        } */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.1rem 1.5rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        .brand-mark {
+            width: 1.6rem;
+            height: 1.1rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #0f1d13, #273e2f);
+            position: relative;
+        }
+
+        .brand-mark::before,
+        .brand-mark::after {
+            content: '';
+            position: absolute;
+            background: #ffffff;
+            width: 0.22rem;
+            height: 0.22rem;
+            border-radius: 999px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .brand-mark::before {
+            left: 0.45rem;
+        }
+
+        .brand-mark::after {
+            left: 0.9rem;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-links a {
+            text-decoration: none;
+            color: #1a2f23;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .top-links .cta {
+            border: 1px solid #1f3528;
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            background: var(--white);
+        }
+
         .hero {
-            background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #818cf8 100%);
-            padding: 4rem 1.25rem 3.5rem;
+            background: linear-gradient(180deg, var(--hero-bg), var(--hero-bg-dark));
+            margin: 0 0.7rem;
+            border-radius: 14px;
+            padding: 2.6rem 2.2rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: reveal 620ms ease;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 22rem;
+            height: 22rem;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0));
+            right: -6rem;
+            top: -7rem;
+        }
+
+        .hero-left {
+            position: relative;
+            z-index: 2;
+        }
+
+        .story-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .story-badge small {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--ink-soft);
+            margin-top: 0.1rem;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.9rem, 7vw, 5.2rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-copy {
+            margin: 1.3rem 0;
+            max-width: 29rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #123422;
+            font-weight: 500;
+        }
+
+        .hero-metrics {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 0.8rem 0;
+            font-weight: 700;
+            color: #112f20;
+            margin-bottom: 1.1rem;
+        }
+
+        .hero-search {
+            display: flex;
+            gap: 0.6rem;
+            width: min(36rem, 100%);
+            margin-bottom: 1.3rem;
+        }
+
+        .hero-search input {
+            flex: 1;
+            border: 1px solid rgba(8, 29, 16, 0.25);
+            border-radius: 999px;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.96);
+            font: inherit;
+            color: #163724;
+        }
+
+        .hero-search button {
+            border: none;
+            border-radius: 999px;
+            background: #06110b;
+            color: #ffffff;
+            padding: 0.8rem 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .hero-actions a {
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 800;
+            border-radius: 999px;
+            padding: 0.66rem 1.1rem;
+            border: 1px solid #193628;
+            color: #0f281c;
+            background: rgba(255, 255, 255, 0.32);
+        }
+
+        .hero-actions a.primary {
+            background: #07110b;
+            color: #ffffff;
+            border-color: #07110b;
+        }
+
+        .hero-right {
+            position: relative;
+            min-height: 28rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2;
+        }
+
+        .portrait-card {
+            width: min(22rem, 100%);
+            height: 25.6rem;
+            background: #c6ecf4;
+            border-radius: 1.8rem;
+            overflow: hidden;
+            box-shadow: 0 18px 36px rgba(15, 47, 31, 0.24);
+            animation: float 4.2s ease-in-out infinite;
+        }
+
+        .portrait-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .query-chip {
+            position: absolute;
+            left: -2.6rem;
+            background: #ffffff;
+            border-radius: 999px;
+            min-width: 14rem;
+            padding: 0.5rem 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 22px rgba(18, 37, 27, 0.16);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .query-chip b {
+            width: 1.32rem;
+            height: 1.32rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            background: #08120d;
+            font-size: 0.73rem;
+        }
+
+        .chip-1 { top: 8.2rem; }
+        .chip-2 { top: 11.2rem; }
+        .chip-3 { top: 14.2rem; }
+        .chip-4 { top: 17.2rem; }
+
+        .metric-card {
+            position: absolute;
+            right: -0.7rem;
+            bottom: 1.2rem;
+            background: var(--yellow);
+            border-radius: 1.1rem;
+            padding: 0.85rem 1rem;
+            width: 7.8rem;
+            line-height: 1.15;
+            box-shadow: 0 12px 20px rgba(30, 24, 0, 0.2);
+        }
+
+        .metric-card span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .metric-card strong {
+            display: block;
+            margin: 0.35rem 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+        }
+
+        .partners {
+            margin: 0.8rem;
+            border-radius: 12px;
+            background: rgba(12, 125, 58, 0.3);
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 0.5rem;
             text-align: center;
         }
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800;
-            color: #fff; margin: 0 0 0.6rem; letter-spacing: -0.03em;
-            text-shadow: 0 2px 12px rgba(0,0,0,.18);
-        }
-        .hero p {
-            color: #c7d2fe; font-size: 1.0625rem; margin: 0 0 2rem;
+
+        .partners span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #112f20;
+            font-size: clamp(1.1rem, 2vw, 1.55rem);
         }
 
-        /* ── Search ── */
-        .search-wrap {
-            display: flex; gap: 0; max-width: 540px; margin: 0 auto;
-            border-radius: 0.65rem; overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0,0,0,.22);
-        }
-        .search-input {
-            flex: 1; padding: 0.875rem 1.125rem;
-            border: none; outline: none;
-            font-size: 0.9375rem; color: #1e293b; background: #fff;
-        }
-        .search-input::placeholder { color: #94a3b8; }
-        .search-btn {
-            padding: 0 1.5rem; background: #f59e0b; color: #fff;
-            font-weight: 700; font-size: 0.9375rem; border: none; cursor: pointer;
-            display: flex; align-items: center; gap: 0.45rem;
-            transition: background .18s;
-        }
-        .search-btn:hover { background: #d97706; }
-
-        /* ── Main Content ── */
-        .main { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
-
-        /* ── Section Title ── */
-        .section-title {
-            font-size: 1.25rem; font-weight: 700; color: #1e293b;
-            margin: 0 0 1.25rem;
-            display: flex; align-items: center; gap: 0.6rem;
-        }
-        .section-title span.pill {
-            font-size: 0.75rem; font-weight: 700;
-            background: #eef2ff; color: #4f46e5;
-            padding: 0.15rem 0.6rem; border-radius: 9999px;
+        .content {
+            width: min(1180px, 100%);
+            margin: 1.2rem auto 0;
+            padding: 0 0.2rem 2rem;
         }
 
-        /* ── Table Card ── */
-        .table-card {
-            background: #fff; border-radius: 0.875rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,.07), 0 8px 24px rgba(0,0,0,.05);
-            overflow: hidden;
+        .panel {
+            background: #ffffff;
+            border: 1px solid #dcebdd;
+            border-radius: 16px;
+            padding: 1.2rem;
+            box-shadow: 0 12px 36px rgba(19, 53, 31, 0.07);
         }
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table thead th {
-            background: #f8fafc; padding: 0.8rem 1.25rem;
-            text-align: left; font-size: 0.75rem; font-weight: 700;
-            color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;
-            border-bottom: 1.5px solid #e2e8f0;
-        }
-        .data-table thead th:last-child { text-align: center; }
-        .data-table tbody tr { transition: background .15s; }
-        .data-table tbody tr:hover { background: #f8fafc; }
-        .data-table tbody tr + tr { border-top: 1px solid #f1f5f9; }
-        .data-table tbody td { padding: 0.9rem 1.25rem; vertical-align: middle; }
-        .data-table tbody td:last-child { text-align: center; }
 
-        .serial-badge {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 1.75rem; height: 1.75rem; border-radius: 50%;
-            background: #eef2ff; color: #6366f1; font-size: 0.75rem; font-weight: 700;
+        .panel h2 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem;
+            font-family: 'Space Grotesk', sans-serif;
         }
-        .category-name-cell {
-            font-weight: 600; color: #1e293b; font-size: 0.9375rem;
-        }
-        .quiz-count-badge {
-            display: inline-flex; align-items: center;
-            padding: 0.18rem 0.55rem; border-radius: 9999px;
-            background: #dcfce7; color: #166534; font-size: 0.7rem; font-weight: 700;
-            margin-left: 0.5rem;
-        }
-        .btn-view {
-            display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.4rem 1rem; font-size: 0.8125rem; font-weight: 600;
-            background: #4f46e5; color: #fff; border: none; border-radius: 0.4rem;
-            cursor: pointer; text-decoration: none;
-            transition: background .18s, box-shadow .18s;
-            box-shadow: 0 1px 4px rgba(79,70,229,.3);
-        }
-        .btn-view:hover { background: #4338ca; box-shadow: 0 3px 10px rgba(79,70,229,.4); }
 
-        /* ── Quiz Results (search) ── */
-        .result-card {
-            background: #fff; border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.06);
-            padding: 1.125rem 1.375rem; margin-bottom: 0.75rem;
-            display: flex; align-items: center; justify-content: space-between;
-            transition: box-shadow .18s;
+        .results-grid,
+        .category-grid {
+            display: grid;
+            gap: 0.85rem;
         }
-        .result-card:hover { box-shadow: 0 4px 18px rgba(79,70,229,.14); }
-        .result-info h3 { margin: 0; font-size: 0.9375rem; font-weight: 700; color: #1e293b; }
-        .result-info p  { margin: 0.2rem 0 0; font-size: 0.8rem; color: #64748b; }
 
-        .empty-state {
-            text-align: center; padding: 3rem 1rem;
-            background: #fff; border-radius: 0.875rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        .result-card,
+        .category-card {
+            border: 1px solid #e2efe1;
+            border-radius: 12px;
+            padding: 0.9rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
         }
-        .empty-state p { color: #94a3b8; font-weight: 500; margin: 0.75rem 0 0; }
 
-        /* Search clear tag */
-        .search-tag {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            background: #eef2ff; color: #4338ca; font-size: 0.8125rem;
-            font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 9999px;
-            margin-bottom: 1.25rem;
+        .result-card h3,
+        .category-card h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: #122d20;
         }
-        .search-tag a { color: #4338ca; text-decoration: none; font-size: 1rem; line-height:1; }
-        .search-tag a:hover { color: #dc2626; }
+
+        .result-card p,
+        .category-card p {
+            margin: 0.26rem 0 0;
+            color: #4f6f5f;
+            font-size: 0.86rem;
+            font-weight: 600;
+        }
+
+        .result-card a,
+        .category-card a,
+        .search-clear {
+            text-decoration: none;
+            background: #08120c;
+            color: #ffffff;
+            padding: 0.48rem 0.92rem;
+            border-radius: 999px;
+            font-size: 0.81rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .search-label {
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            color: #244838;
+            font-weight: 700;
+        }
+
+        .empty {
+            border: 1px dashed #c5dcc4;
+            padding: 1.3rem;
+            border-radius: 12px;
+            text-align: center;
+            color: #577364;
+            font-weight: 700;
+        }
+
+        @media (max-width: 990px) {
+            .top-links a:not(.cta) {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 2rem 1.3rem;
+            }
+
+            .hero-right {
+                min-height: 22rem;
+            }
+
+            .query-chip {
+                left: 0.6rem;
+            }
+
+            .chip-1 { top: 1.5rem; }
+            .chip-2 { top: 4.25rem; }
+            .chip-3 { top: 7rem; }
+            .chip-4 { top: 9.75rem; }
+
+            .partners {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                row-gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 0.45rem;
+            }
+
+            .topbar {
+                padding: 0.95rem;
+            }
+
+            .hero-search,
+            .hero-actions,
+            .result-card,
+            .category-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .result-card a,
+            .category-card a {
+                text-align: center;
+            }
+
+            .query-chip {
+                position: static;
+                margin-top: 0.55rem;
+                width: 100%;
+            }
+
+            .hero-right {
+                min-height: auto;
+                align-items: stretch;
+            }
+
+            .metric-card {
+                right: 0.6rem;
+                bottom: 0.8rem;
+            }
+
+            .portrait-card {
+                height: 22rem;
+            }
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
     </style>
 </head>
-<body style="background: linear-gradient(160deg, #f1f5f9 0%, #e8eaf6 100%); min-height: 100vh;">
+<body>
+    <div class="landing-frame">
+        <header class="topbar">
+            <a href="/" class="brand">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <span>/ QuizSystem</span>
+            </a>
 
-    {{-- Navbar --}}
-    <nav class="user-nav">
-        <a href="/" class="brand">
-            <svg xmlns="http://www.w3.org/2000/svg" style="width:1.5rem;height:1.5rem;color:#a5b4fc;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-            </svg>
-            Quiz System
-        </a>
-        <a href="/admin-login" class="nav-admin-link">Admin Login</a>
-    </nav>
+            <nav class="top-links">
+                <a href="/">Product</a>
+                <a href="/">Solutions</a>
+                <a href="/">Pricing</a>
+                <a href="/">Developers</a>
+                <a href="/admin-login" class="cta">Log in</a>
+            </nav>
+        </header>
 
-    {{-- Hero / Search --}}
-    <div class="hero">
-        <h1>Test Your Skill</h1>
-        <p>Browse categories or search for a quiz to get started</p>
+        <section class="hero">
+            <div class="hero-left">
+                <div class="story-badge">
+                    20M+ User
+                    <small>Read Our Success Stories</small>
+                </div>
 
-        <form action="/" method="GET">
-            <div class="search-wrap">
-                <input
-                    class="search-input"
-                    type="text"
-                    name="search"
-                    value="{{ $search ?? '' }}"
-                    placeholder="Search quiz by name…"
-                    autocomplete="off"
-                />
-                <button class="search-btn" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem;height:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-                    </svg>
-                    Search
-                </button>
+                <h1 class="hero-title">Quizzes</h1>
+                <p class="hero-copy">
+                    Attract customers and increase time on brand recall with polls, quizzes, and more.
+                </p>
+
+                <div class="hero-metrics">
+                    <span>Chance to close deal <strong>4X</strong></span>
+                    <span>/</span>
+                    <span><strong>5.0</strong> rated</span>
+                </div>
+
+                <form action="/" method="GET" class="hero-search">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ $search ?? '' }}"
+                        placeholder="Search quiz by name"
+                        autocomplete="off"
+                    >
+                    <button type="submit">Find Quiz</button>
+                </form>
+
+                <div class="hero-actions">
+                    <a href="/" class="primary">Download - It's Free</a>
+                    <a href="/">Our Pricing</a>
+                </div>
             </div>
-        </form>
+
+            <div class="hero-right">
+                <div class="portrait-card">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80" alt="Quiz engagement">
+                </div>
+
+                <div class="query-chip chip-1"><b>A</b> How is the fit?</div>
+                <div class="query-chip chip-2"><b>B</b> Do you like the design?</div>
+                <div class="query-chip chip-3"><b>C</b> What would you recommend?</div>
+                <div class="query-chip chip-4"><b>D</b> Is it comfortable?</div>
+
+                <div class="metric-card">
+                    <span>UP TO</span>
+                    <strong>40%</strong>
+                    <span>increased user engagement</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="partners">
+            <span>Rakuten</span>
+            <span>NCR</span>
+            <span>monday.com</span>
+            <span>Disney</span>
+            <span>Dropbox</span>
+        </div>
     </div>
 
-    {{-- Main --}}
-    <div class="main">
-
-        @if($quizResults !== null)
-            {{-- ── Search Results ── --}}
-
-            <div class="search-tag">
-                <svg xmlns="http://www.w3.org/2000/svg" style="width:0.85rem;height:0.85rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-                </svg>
-                Results for "{{ $search }}"
-                <a href="/" title="Clear search">&times;</a>
-            </div>
-
-            <div class="section-title">
-                Quiz Results
-                <span class="pill">{{ $quizResults->count() }} found</span>
-            </div>
-
-            @if($quizResults->isEmpty())
-                <div class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="width:3rem;height:3rem;color:#cbd5e1;margin:0 auto;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <p>No quizzes matched "<strong>{{ $search }}</strong>". Try a different keyword.</p>
+    <main class="content">
+        <section class="panel">
+            @if($quizResults !== null)
+                <div class="search-label">
+                    <span>Results for "{{ $search }}"</span>
+                    <a class="search-clear" href="/">Clear</a>
                 </div>
-            @else
-                @foreach($quizResults as $quiz)
-                    <div class="result-card">
-                        <div class="result-info">
-                            <h3>{{ $quiz->name }}</h3>
-                            <p>
-                                Category:
-                                <strong style="color:#4f46e5;">{{ optional($quiz->category)->name ?? '—' }}</strong>
-                            </p>
-                        </div>
-                        <a href="/quizzes/{{ $quiz->id }}" class="btn-view">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width:0.85rem;height:0.85rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                            </svg>
-                            View Quiz
-                        </a>
+
+                <h2>Quiz Results ({{ $quizResults->count() }})</h2>
+
+                @if($quizResults->isEmpty())
+                    <div class="empty">No quizzes matched "{{ $search }}". Try another keyword.</div>
+                @else
+                    <div class="results-grid">
+                        @foreach($quizResults as $quiz)
+                            <article class="result-card">
+                                <div>
+                                    <h3>{{ $quiz->name }}</h3>
+                                    <p>Category: {{ optional($quiz->category)->name ?? '-' }}</p>
+                                </div>
+                                <a href="/quizzes/{{ $quiz->id }}">View Quiz</a>
+                            </article>
+                        @endforeach
                     </div>
-                @endforeach
-            @endif
-
-        @else
-            {{-- ── Category Listing ── --}}
-
-            <div class="section-title">
-                <svg xmlns="http://www.w3.org/2000/svg" style="width:1.3rem;height:1.3rem;color:#6366f1;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a2 2 0 012-2z"/>
-                </svg>
-                Browse Categories
-                <span class="pill">{{ $categories->count() }} {{ Str::plural('Category', $categories->count()) }}</span>
-            </div>
-
-            @if($categories->isEmpty())
-                <div class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="width:3rem;height:3rem;color:#cbd5e1;margin:0 auto;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4"/>
-                    </svg>
-                    <p>No categories available yet. Check back soon!</p>
-                </div>
+                @endif
             @else
-                <div class="table-card">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th style="width:4rem;">#</th>
-                                <th>Category Name</th>
-                                <th style="width:7rem;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($categories as $index => $category)
-                                <tr>
-                                    <td>
-                                        <span class="serial-badge">{{ $index + 1 }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="category-name-cell">{{ $category->name }}</span>
-                                        <span class="quiz-count-badge">
-                                            {{ $category->quizzes_count }} {{ Str::plural('quiz', $category->quizzes_count) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="/quizzes/category/{{ $category->id }}" class="btn-view">
-                                            <svg xmlns="http://www.w3.org/2000/svg" style="width:0.8rem;height:0.8rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                            View
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                <h2>Browse Categories ({{ $categories->count() }} {{ \Illuminate\Support\Str::plural('Category', $categories->count()) }})</h2>
+
+                @if($categories->isEmpty())
+                    <div class="empty">No categories available yet. Check back soon.</div>
+                @else
+                    <div class="category-grid">
+                        @foreach($categories as $category)
+                            <article class="category-card">
+                                <div>
+                                    <h3>{{ $category->name }}</h3>
+                                    <p>{{ $category->quizzes_count }} {{ \Illuminate\Support\Str::plural('quiz', $category->quizzes_count) }} available</p>
+                                </div>
+                                <a href="/quizzes/category/{{ $category->id }}">Explore</a>
+                            </article>
+                        @endforeach
+                    </div>
+                @endif
             @endif
-
-        @endif
-
-    </div>
-
+        </section>
+    </main>
 </body>
 </html>
